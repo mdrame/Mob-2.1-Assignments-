@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 
-struct Person {
+struct Person: Codable {
     var name: String
     var favoriteColor: UIColor
 }
@@ -34,4 +34,21 @@ extension Person {
     
 }
 
+let me = Person(name: "Mohammed", favoriteColor: .yellow)
+let encoder = JSONEncoder()
+if let encodedData = try? encoder.encode(me)  {
+    UserDefaults.standard.set(encodedData, forKey: "meObject")
+} else {
+    print("Data couldn't be encoded")
+}
+
+
+let dataFromUserDefault = UserDefaults.standard.data(forKey: "meObject")
+let decoder = JSONDecoder()
+if let decodedData = try? decoder.decode(Person.self, from: dataFromUserDefault!) {
+    print(decodedData.name)
+    print(decodedData.favoriteColor)
+} else {
+    print("Data could not be decoded")
+}
 
